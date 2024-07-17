@@ -1,0 +1,138 @@
+#container {
+    position: relative;
+    max-width: 500px;
+    margin: auto;
+    border: 1px solid black;
+    height: 700px;
+    overflow: hidden;
+}
+
+
+#line-div {
+    width: 250px;
+    height: 10px;
+    position: absolute;
+    border-bottom: 3px solid red;
+    right: 300px;
+    top: 150px;
+}
+
+#stt {
+    position: absolute;
+}
+
+#score {
+    position: absolute;
+}
+
+#bird1img {
+    position: absolute;
+    top: 360px;
+    left: 25px;
+    height: 40px;
+    width: 60px;
+}
+
+#pipe1 img {
+    position: absolute;
+    bottom: 50px;
+    right: -150px;
+    width: 100px;
+    height: 400px;
+}
+
+#piperotate1 img {
+    position: absolute;
+    top: 0px;
+    right: -150px;
+    width: 100px;
+    height: 300px;
+    transform: rotate(180deg);
+}
+
+#pipe2 img {
+    position: absolute;
+    bottom: 50px;
+    right: -350px;
+    width: 100px;
+    height: 400px;
+}
+
+#piperotate2 img {
+    position: absolute;
+    top: 0px;
+    right: -350px;
+    width: 100px;
+    height: 300px;
+    transform: rotate(180deg);
+}
+
+#pipe3 img {
+    position: absolute;
+    bottom: 0px;
+    right: -550px;
+    width: 100px;
+    height: 400px;
+}
+
+
+#background img {
+    width: 500px;
+    height: 680px;
+}
+
+#base1 img {
+    position: absolute;
+    top: 645px;
+    right: -250px;
+    width: 500px;
+    height: 180px;
+}
+
+#base2 img {
+    position: absolute;
+    top: 645px;
+    right: 250px;
+    width: 500px;
+    height: 180px;
+}
+
+#stt {
+    position: absolute;
+    top: 50px;
+    left: 170px;
+}
+
+#score {
+    position: absolute;
+    top: 100px;
+    left: 240px;
+}
+
+#upbutton {
+    width: 250px;
+}
+
+#start {
+    width: 245px;
+}
+
+#score {
+    position: absolute;
+    font-size: 100px;
+    top: 40px;
+    left:230px;
+    color: bisque;
+}
+
+#startgame{
+    position: absolute;
+    top:  250px;
+    left: 160px;
+}
+
+#gameover{
+    position: absolute;
+    top:  100px;
+    left: 160px;
+}
