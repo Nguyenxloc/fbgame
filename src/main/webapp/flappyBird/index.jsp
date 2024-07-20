@@ -128,14 +128,33 @@
     #startgame{
         position: absolute;
         top:  250px;
-        left: 110px;
+        left: 90px;
+        width: 100px;
+        height: 50px
     }
 
     #gameover{
         position: absolute;
         top:  100px;
-        left: 110px;
+        left: 90px;
     }
+
+    #playerName{
+        position: absolute;
+        top:  150px;
+        left: 100px;
+        width: 180px;
+        height: 30px;
+    }
+
+    #boardScore{
+        position: absolute;
+        top:  250px;
+        left: 200px;
+        width: 100px;
+        height: 50px
+    }
+
     </style>
 <body>
         <div id="container" onclick="upper()">
@@ -163,8 +182,10 @@
             <div id="base2">
                 <img id="base2img" src="/flappyBird/img/base.png" alt="base">
             </div>
-            <img id="startgame" src="/flappyBird/img/startgame.png" alt="startgame">
-            <img id="gameover" src="/flappyBird/img/gameover.png" alt="gameover">
+            <img id="startgame" src="/flappyBird/img/play-button.png" onclick="begin()" alt="startgame">
+            <img id="boardScore" src="/flappyBird/img/board-button.png" onclick="begin()" alt="boardButton">
+            <img id="gameover" src="/flappyBird/img/gameover.png" style="display: none" alt="gameover">
+            <input type="text" id="playerName" placeholder="Please enter name">
             <h2 id="score"></h2>
         </div>
     <script>
@@ -198,13 +219,16 @@
         var score = document.querySelector("#score");
         var birdPlayer = document.querySelector("#bird1img");
         var startIcon = document.querySelector("#startgame");
+        var boardIcon = document.querySelector("#boardScore")
         var gameoverIMG = document.querySelector("#gameover");
+        var playerNameInp = document.querySelector("#playerName");
         var audioPoint = new Audio('/flappyBird/audio/point.ogg');
         var audioHit = new Audio('/flappyBird/audio/hit.ogg');
         var audioWing = new Audio('/flappyBird/audio/wing.ogg');
         var audioSwoosh = new Audio('/flappyBird/audio/swoosh.ogg');
         var audioDie = new Audio('/flappyBird/audio/die.ogg');
-
+        let playerName = "";
+        let circleLife = 0;
         clearRam();
         function downer() {
             posY = posY + vb;
@@ -225,6 +249,16 @@
         }
 
         function begin() {
+            if (sttStartGame == 0) {
+                startIcon.style.visibility = "hidden";
+                gameoverIMG.style.visibility = "hidden";
+                boardIcon.style.visibility  = "hidden";
+            }
+            sttStartGame =1;
+            if(circleLife>=0){
+                playerNameInp.style.display = 'none';
+                gameoverIMG.style.display = 'block';
+            }
             audioSwoosh.play();
             clearRam();
             bird = setInterval(downer, 10);
@@ -246,17 +280,12 @@
             posXofBase2 = 250;
             posY = 220;
             sc = 0;
+            circleLife++;
             score.innerHTML = "";
         }
 
         function upper() {
-            if (sttStartGame == 0) {
-                begin();
-                sttStartGame = 1;
-                startIcon.style.visibility = "hidden";
-                gameoverIMG.style.visibility = "hidden";
-            }
-            if (winOrLose == 1) {
+            if (winOrLose == 1 && sttStartGame == 1) {
                 audioWing.play();
                 posY = posY - 125;
                 let py = posY.toString() + "px";
@@ -405,6 +434,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
             if (posY < pipeRotate1.height && posXofPipe1 >= 185 && posXofPipe1 <= 190) {
                 // console.log("game over");
@@ -417,6 +447,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
             //hit to the floor or ceil of pipe
             if (posY >= (pipeRotate1.height - 5) && posY <= (pipeRotate1.height) && posXofPipe1 >= 190  && posXofPipe1 <= 355) {
@@ -429,6 +460,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
             if (posY >= (pipeRotate1.height + 180) && posY <= (pipeRotate1.height + 250) && posXofPipe1 >= 190 && posXofPipe1 <= 355) {
                 vb = 0;
@@ -440,6 +472,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
             if (posY > 605) {
                 // console.log("game over");
@@ -452,6 +485,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
 
             // hit to pipe2
@@ -467,6 +501,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
             if (posY < pipeRotate2.height && posXofPipe2 >= 190 && posXofPipe2 <= 195) {
                 // console.log("game over");
@@ -479,6 +514,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
             //hit to the floor or ceil of pipe
             if (posY >= (pipeRotate2.height - 5) && posY <= (pipeRotate2.height + 0) && posXofPipe2 >= 185  && posXofPipe2 <= 355) {
@@ -491,6 +527,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
             if (posY >= (pipeRotate2.height + 180) && posY <= (pipeRotate2.height + 250) && posXofPipe2 >= 185 && posXofPipe2 <= 335) {
                 vb = 0;
@@ -502,6 +539,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
             if (posY > 605) {
                 // console.log("game over");
@@ -514,6 +552,7 @@
                 audioHit.play();
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
+                boardIcon.style.visibility = "visible";
             }
         }
 

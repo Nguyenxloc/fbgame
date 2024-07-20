@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 @Controller
-@RequestMapping("score-board")
-public class ScoreBoardController {
+@RequestMapping("username")
+public class UsernameController {
     //    @RequestMapping(name="login", method = RequestMethod.POST)
     @Autowired
     ScoreRepository scoreRepo;
-    public ScoreBoardController() {
+    public UsernameController() {
 
     }
     @CrossOrigin
