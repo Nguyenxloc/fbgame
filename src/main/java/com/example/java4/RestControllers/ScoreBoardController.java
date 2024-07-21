@@ -2,6 +2,7 @@ package com.example.java4.RestControllers;
 import com.example.java4.entitiesLv1.ScoreBoard;
 import com.example.java4.repositories.ScoreRepository;
 import com.example.java4.requestStore.ScoreBoardStore;
+import com.example.java4.requestUpdate.ScoreBoardUpdate;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -42,9 +43,9 @@ public class ScoreBoardController {
     }
 
     @CrossOrigin
-    @PostMapping("save")
-    public ResponseEntity<Boolean> save(
-            @RequestBody @Valid ScoreBoardStore newScore,
+    @PostMapping("update")
+    public ResponseEntity<Boolean> update(
+            @RequestBody @Valid ScoreBoardUpdate newScore,
             BindingResult result
     ) {
         if (result.hasErrors()) {

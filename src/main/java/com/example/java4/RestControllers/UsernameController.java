@@ -54,10 +54,17 @@ public class UsernameController {
             LocalDateTime localNow = LocalDateTime.now();
             ScoreBoard scoreBoard = new ScoreBoard();
             scoreBoard.setUserName(newScore.getUserName());
-            scoreBoard.setScore(Integer.valueOf(newScore.getScore()));
+            scoreBoard.setScore(0);
             scoreBoard.setDayTime(localNow);
-            scoreRepo.save(scoreBoard);
-            return ResponseEntity.ok(true);
+//            System.out.println("check username existed: "+scoreRepo.isExisted(newScore.getUserName()));
+            if(scoreRepo.isExisted(newScore.getUserName())==null){
+                System.out.println("========================check: ");
+                scoreRepo.save(scoreBoard);
+                return ResponseEntity.ok(true);
+            }
+            else{
+                return ResponseEntity.ok(false);
+            }
         }
     }
 }
