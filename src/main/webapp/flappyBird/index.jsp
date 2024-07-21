@@ -145,6 +145,9 @@
         left: 100px;
         width: 180px;
         height: 30px;
+        border: 2px solid #000; /* Black border */
+        padding: 5px;          /* Padding inside the input */
+        border-radius: 4px;
     }
 
     #boardScore{
@@ -182,7 +185,7 @@
             <div id="base2">
                 <img id="base2img" src="/flappyBird/img/base.png" alt="base">
             </div>
-            <img id="startgame" src="/flappyBird/img/play-button.png" onclick="begin()" alt="startgame">
+            <img id="startgame" src="/flappyBird/img/play-button.png" onclick="createNewUser()" alt="startgame">
             <img id="boardScore" src="/flappyBird/img/board-button.png" onclick="begin()" alt="boardButton">
             <img id="gameover" src="/flappyBird/img/gameover.png" style="display: none" alt="gameover">
             <input type="text" id="playerName" placeholder="Please enter name">
@@ -215,6 +218,7 @@
         let base = setInterval(moveBase, 10);
         let logic = setInterval(logicGameOver, 1);
         let logic1 = setInterval(logicGameScore, 50);
+        let playerName = "";
         var stt = document.querySelector("#stt");
         var score = document.querySelector("#score");
         var birdPlayer = document.querySelector("#bird1img");
@@ -227,7 +231,6 @@
         var audioWing = new Audio('/flappyBird/audio/wing.ogg');
         var audioSwoosh = new Audio('/flappyBird/audio/swoosh.ogg');
         var audioDie = new Audio('/flappyBird/audio/die.ogg');
-        let playerName = "";
         let circleLife = 0;
         clearRam();
         function downer() {
@@ -246,6 +249,29 @@
             }
             let dir = "bird" + flapCount + ".png";// auto generate like "bird1.png"
             birdPlayer.src = "/flappyBird/img/" + dir;
+        }
+        function createNewUser(){
+            data ={
+                userName: playerNameInp.value,
+                score:"0"
+            }
+                fetch(`/username/save`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(response => response.json()
+                ).then(resp => {
+                    if(resp){
+                        playerName = playerNameInp.value;
+                        begin();
+                    }
+                    else{
+                        console.log("duplicate name");
+                    }
+                });
+
         }
 
         function begin() {
@@ -412,6 +438,23 @@
             }
         }
 
+        function updateScore(){
+            console.log("test count circle: "+countCircle );
+            data ={
+                userName: playerName,
+                score:countCircle
+            }
+            fetch(`/score-board/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => response.json()
+            ).then(resp => {
+                console.log("test resp: ", resp);
+            });
+        }
 
         function logicGameOver() {
             var pipe1 = document.querySelector("#pipe1img");
@@ -435,6 +478,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
             if (posY < pipeRotate1.height && posXofPipe1 >= 185 && posXofPipe1 <= 190) {
                 // console.log("game over");
@@ -448,6 +493,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
             //hit to the floor or ceil of pipe
             if (posY >= (pipeRotate1.height - 5) && posY <= (pipeRotate1.height) && posXofPipe1 >= 190  && posXofPipe1 <= 355) {
@@ -461,6 +508,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
             if (posY >= (pipeRotate1.height + 180) && posY <= (pipeRotate1.height + 250) && posXofPipe1 >= 190 && posXofPipe1 <= 355) {
                 vb = 0;
@@ -473,6 +522,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
             if (posY > 605) {
                 // console.log("game over");
@@ -486,6 +537,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
 
             // hit to pipe2
@@ -502,6 +555,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
             if (posY < pipeRotate2.height && posXofPipe2 >= 190 && posXofPipe2 <= 195) {
                 // console.log("game over");
@@ -515,6 +570,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
             //hit to the floor or ceil of pipe
             if (posY >= (pipeRotate2.height - 5) && posY <= (pipeRotate2.height + 0) && posXofPipe2 >= 185  && posXofPipe2 <= 355) {
@@ -528,6 +585,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
             if (posY >= (pipeRotate2.height + 180) && posY <= (pipeRotate2.height + 250) && posXofPipe2 >= 185 && posXofPipe2 <= 335) {
                 vb = 0;
@@ -540,6 +599,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
             if (posY > 605) {
                 // console.log("game over");
@@ -553,6 +614,8 @@
                 gameoverIMG.style.visibility = "visible";
                 startIcon.style.visibility = "visible";
                 boardIcon.style.visibility = "visible";
+                console.log("test name temp: "+playerName);
+                updateScore();
             }
         }
 

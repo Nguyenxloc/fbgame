@@ -57,8 +57,22 @@ public class ScoreBoardController {
             scoreBoard.setUserName(newScore.getUserName());
             scoreBoard.setScore(Integer.valueOf(newScore.getScore()));
             scoreBoard.setDayTime(localNow);
-            scoreRepo.save(scoreBoard);
-            return ResponseEntity.ok(true);
+            if(scoreRepo.isExisted(newScore.getUserName())==null){
+                System.out.println("========================check: ");
+                scoreRepo.save(scoreBoard);
+                return ResponseEntity.ok(true);
+            }
+            else{
+                ScoreBoard scoreBoard0 = scoreRepo.isExisted(newScore.getUserName());
+                ScoreBoard scoreBoard1 = new ScoreBoard();
+                scoreBoard1.setId(scoreBoard0.getId());
+                scoreBoard1.setUserName(scoreBoard1.getUserName());
+                scoreBoard1.setScore(Integer.valueOf(newScore.getScore()));
+                scoreBoard1.setDayTime(scoreBoard1.getDayTime());
+                scoreRepo.save(scoreBoard1);
+                System.out.println("=================test score record: "+scoreBoard1.getScore());
+                return ResponseEntity.ok(true);
+            }
         }
     }
 }
