@@ -25,10 +25,8 @@ public class ScoreBoardController {
     }
     @CrossOrigin
     @GetMapping("/index")
-    public ResponseEntity<List<ScoreBoard>> index(@RequestParam("page")Optional<Integer> pageParam) {
-        int page = pageParam.orElse(1);
-        Pageable pageable = PageRequest.of(page-1,20);
-        return ResponseEntity.ok(scoreRepo.getGloryBoard(pageable).getContent()) ;
+    public ResponseEntity<List<ScoreBoard>> index() {
+        return ResponseEntity.ok(scoreRepo.getTopScore()) ;
     }
 
     @CrossOrigin
@@ -66,8 +64,13 @@ public class ScoreBoardController {
                 ScoreBoard scoreBoard0 = scoreRepo.isExisted(newScore.getUserName());
                 ScoreBoard scoreBoard1 = new ScoreBoard();
                 scoreBoard1.setId(scoreBoard0.getId());
-                scoreBoard1.setUserName(scoreBoard1.getUserName());
-                scoreBoard1.setScore(Integer.valueOf(newScore.getScore()));
+                scoreBoard1.setUserName(scoreBoard0.getUserName());
+                if(newScore.getScore() > scoreBoard0.getScore()){
+                    scoreBoard1.setScore(Integer.valueOf(newScore.getScore()));
+                }
+                else {
+                    scoreBoard1.setScore(Integer.valueOf(scoreBoard0.getScore()));
+                }
                 scoreBoard1.setDayTime(scoreBoard1.getDayTime());
                 scoreRepo.save(scoreBoard1);
                 System.out.println("=================test score record: "+scoreBoard1.getScore());

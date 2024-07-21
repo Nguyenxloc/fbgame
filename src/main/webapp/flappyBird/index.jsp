@@ -158,6 +158,26 @@
         height: 50px
     }
 
+    #tableScore{
+        position: absolute;
+        top:  350px;
+        left: 70px;
+        overflow: auto;
+        width: 250px;
+        height: 200px;
+        background: antiquewhite;
+    }
+    #tableScore th, #tableScore td {
+        padding: 8px;
+        text-align: left;
+    }
+    #tableScore th {
+        background-color: #f2f2f2;
+        text-align: center; /* Center text in table headers */
+    }
+    #tableScore button {
+        margin-left: 100px; /* Add some space above the button */
+    }
     </style>
 <body>
         <div id="container" onclick="upper()">
@@ -185,10 +205,26 @@
             <div id="base2">
                 <img id="base2img" src="/flappyBird/img/base.png" alt="base">
             </div>
+            <div id="tableScore" style="visibility: hidden ">
+                <table >
+                    <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>User Name</th>
+                        <th>Score</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableScoreBody">
+                    <!-- Rows will be inserted here -->
+                    </tbody>
+                </table>
+                <button onclick="closeBoardScore()" >Close</button>
+            </div>
+
             <img id="startgame" src="/flappyBird/img/play-button.png" onclick="createNewUser()" alt="startgame">
-            <img id="boardScore" src="/flappyBird/img/board-button.png" onclick="begin()" alt="boardButton">
+            <img id="boardScore" src="/flappyBird/img/board-button.png" onclick="openBoardScore()" alt="boardButton">
             <img id="gameover" src="/flappyBird/img/gameover.png" style="display: none" alt="gameover">
-            <input type="text" id="playerName" placeholder="Please enter name">
+            <input type="text" id="playerName" placeholder="Please enter name" required>
             <h2 id="score"></h2>
         </div>
     <script>
@@ -226,6 +262,8 @@
         var boardIcon = document.querySelector("#boardScore")
         var gameoverIMG = document.querySelector("#gameover");
         var playerNameInp = document.querySelector("#playerName");
+        var tableScore = document.querySelector("#tableScore");
+        var tableScoreBody = document.getElementById("tableScoreBody");
         var audioPoint = new Audio('/flappyBird/audio/point.ogg');
         var audioHit = new Audio('/flappyBird/audio/hit.ogg');
         var audioWing = new Audio('/flappyBird/audio/wing.ogg');
@@ -250,11 +288,37 @@
             let dir = "bird" + flapCount + ".png";// auto generate like "bird1.png"
             birdPlayer.src = "/flappyBird/img/" + dir;
         }
+        function  openBoardScore(){
+            fetch("/score-board/index", {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json())
+                .then(resp => {
+                    let html = '';
+                    resp.map((scoreRC,i)=>{
+                        html += '<tr>' +
+                            '<td>' + (i + 1) + '</td>' +
+                            '<td>'+ scoreRC.userName + '</td>' +
+                            '<td>' + scoreRC.score + '</td>' +
+                            '</tr>';
+                    });
+                    document.getElementById('tableScoreBody').innerHTML = html;
+                });
+            tableScore.style.visibility="visible";
+        }
+
+        function  closeBoardScore(){
+            tableScore.style.visibility="hidden";
+        }
+
         function createNewUser(){
-            data ={
-                userName: playerNameInp.value,
-                score:"0"
-            }
+            if(circleLife==0){
+                data ={
+                    userName: playerNameInp.value,
+                    score:"0"
+                }
                 fetch(`/username/save`, {
                     method: 'POST',
                     headers: {
@@ -271,10 +335,15 @@
                         console.log("duplicate name");
                     }
                 });
+            }
+            else{
+                begin();
+            }
 
         }
 
         function begin() {
+            closeBoardScore();
             if (sttStartGame == 0) {
                 startIcon.style.visibility = "hidden";
                 gameoverIMG.style.visibility = "hidden";
